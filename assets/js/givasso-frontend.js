@@ -198,13 +198,6 @@
                 btn.addEventListener( 'click', () => {
                     const freq = btn.dataset.freq;
 
-                    if ( freq !== 'once' && ! givassoData.is_pro ) {
-                        if ( givassoData.upgrade_url ) {
-                            window.open( givassoData.upgrade_url, '_blank' );
-                        }
-                        return;
-                    }
-
                     if ( freq_input ) {
                         freq_input.value = freq;
                     }
@@ -252,6 +245,16 @@
     document.addEventListener( 'DOMContentLoaded', () => {
         document.querySelectorAll( '.givasso-form' ).forEach( ( form ) => new GivassoForm( form ) );
         init_frequency_buttons();
+        document.querySelectorAll( '.givasso-gateway-submit' ).forEach( ( btn ) => {
+            btn.addEventListener( 'click', () => {
+                const form = btn.closest( '.givasso-form' );
+                if ( ! form ) return;
+                const gateway = form.querySelector( '[name="gateway"]' );
+                if ( gateway ) {
+                    gateway.value = btn.dataset.gateway || 'stripe';
+                }
+            } );
+        } );
         show_success_on_return();
     } );
 
