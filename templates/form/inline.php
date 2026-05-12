@@ -149,8 +149,10 @@ $render_extra_fields = static function ( string $form_id, array $extra_fields ):
              hidden></div>
 
         <!-- ── Bouton ─────────────────────────────────────────────────── -->
+        <div class="givasso-gateway-actions">
         <button type="submit"
-                class="givasso-btn givasso-btn--primary givasso-form__submit"
+                class="givasso-btn givasso-btn--primary givasso-form__submit givasso-gateway-submit is-active"
+                data-gateway="stripe"
                 data-label="<?php echo esc_attr( $config->button_text ); ?>"
                 data-label-amount="<?php esc_attr_e( 'Faire un don de', 'givasso' ); ?>">
             <span class="givasso-btn__text">
@@ -159,6 +161,19 @@ $render_extra_fields = static function ( string $form_id, array $extra_fields ):
             <span class="givasso-btn__spinner" hidden aria-hidden="true"></span>
         </button>
 
+
+        <button type="submit"
+                class="HaPayButton givasso-gateway-submit"
+                data-gateway="helloasso">
+            <img src="https://api.helloasso.com/v5/img/logo-ha.svg" alt="" class="HaPayButtonLogo" />
+            <span class="HaPayButtonLabel"><?php esc_html_e( 'Payer avec HelloAsso*', 'givasso' ); ?></span>
+        </button>
+
+        <?php $ha_notice = \Givasso\Admin\Settings::get_helloasso_button_notice(); ?>
+        <?php if ( $ha_notice ) : ?>
+            <p class="givasso-ha-note"><?php echo esc_html( $ha_notice ); ?></p>
+        <?php endif; ?>
+        </div>
 
         <?php if ( $config->gateway === 'helloasso' ) : ?>
             <?php $ha_monthly_url = \Givasso\Admin\Settings::get_helloasso_monthly_url(); ?>
@@ -174,7 +189,7 @@ $render_extra_fields = static function ( string $form_id, array $extra_fields ):
             </div>
         <?php endif; ?>
 
-        <?php $gateway_label = ( $config->gateway === 'helloasso' ) ? 'HelloAsso' : 'Stripe'; ?>
+        <?php $gateway_label = 'Stripe / HelloAsso'; ?>
         <p class="givasso-form__trust">
             <svg class="givasso-form__trust-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
@@ -183,7 +198,7 @@ $render_extra_fields = static function ( string $form_id, array $extra_fields ):
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
             <?php esc_html_e( 'Paiement 100% sécurisé par', 'givasso' ); ?>
-            <span class="givasso-form__trust-badge givasso-form__trust-badge--<?php echo esc_attr( $config->gateway ); ?>">
+            <span class="givasso-form__trust-badge givasso-form__trust-badge--stripe">
                 <?php echo esc_html( $gateway_label ); ?>
             </span>
         </p>

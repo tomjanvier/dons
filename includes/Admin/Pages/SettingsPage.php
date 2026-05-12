@@ -237,6 +237,7 @@ tr:has(.givasso-section-sep) th, tr:has(.givasso-section-sep) td { padding-botto
         $ha_webhook_url   = rest_url( 'givasso/v1/helloasso-webhook' );
         $ha_ok            = Settings::is_helloasso_configured();
         $ha_monthly_url   = Settings::get_helloasso_monthly_url();
+        $ha_button_notice = Settings::get_helloasso_button_notice();
 
         // Général
         $default_gateway = Settings::get_default_gateway();
@@ -549,6 +550,14 @@ tr:has(.givasso-section-sep) th, tr:has(.givasso-section-sep) td { padding-botto
                                     <p class="description">
                                         <?php esc_html_e( 'Utilisé quand le donateur choisit “Don récurrent”.', 'givasso' ); ?>
                                     </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e( 'Texte sous bouton HelloAsso', 'givasso' ); ?></th>
+                                <td>
+                                    <input type="text" name="ha_button_notice"
+                                           value="<?php echo esc_attr( $ha_button_notice ); ?>"
+                                           class="regular-text" placeholder="* Exemple de mention">
                                 </td>
                             </tr>
 

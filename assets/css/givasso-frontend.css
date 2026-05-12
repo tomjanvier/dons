@@ -710,9 +710,11 @@
 }
 
 .givasso-ha-monthly { margin-bottom: 1rem; }
-.HaPayButton { display:flex; align-items:center; border:none; text-decoration:none; }
+.givasso-gateway-actions { display:flex; flex-direction:column; gap:.75rem; }
+.HaPayButton { display:flex; align-items:stretch; border:none; text-decoration:none; background:none; padding:0; cursor:pointer; width:100%; }
 .HaPayButtonLogo { background:#fff; border:1px solid #4c40cf; border-radius:8px 0 0 8px; padding:10px 16px; width:56px; }
-.HaPayButtonLabel { background:#4c40cf; border:1px solid #4c40cf; color:#fff; padding:10px 16px; border-radius:0 8px 8px 0; font-weight:700; }
+.HaPayButtonLabel { background:#4c40cf; border:1px solid #4c40cf; color:#fff; padding:10px 16px; border-radius:0 8px 8px 0; font-weight:700; flex:1; text-align:center; }
+.givasso-ha-note { margin:0; font-size:.85rem; color:var(--givasso-color-text-muted); }
 
 /* Encadré portable pour insertion dans n'importe quelle zone */
 .givasso-wrap .givasso-form {
