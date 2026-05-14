@@ -153,11 +153,10 @@ final class FormConfig {
             $vars['--givasso-color-primary-light'] = $this->lighten_hex( $custom_primary );
         }
 
-        // 3. Override couleur accent depuis les réglages admin
-        $custom_accent = Settings::get_appearance_accent_color();
-        if ( $custom_accent !== '' ) {
-            $vars['--givasso-color-accent'] = $custom_accent;
-        }
+        // 3. Accentuation alignée sur la couleur principale (source unique)
+        //    On garde la variable CSS pour éviter de casser le CSS existant,
+        //    mais sa valeur suit systématiquement la couleur principale.
+        $vars['--givasso-color-accent'] = $vars['--givasso-color-primary'];
 
         // 4. Rayon des coins depuis les réglages admin
         $radius_map = [
