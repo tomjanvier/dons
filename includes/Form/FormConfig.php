@@ -83,9 +83,9 @@ final class FormConfig {
 
         // Palette officielle Givasso — ONG / fundraising
         'givasso' => [
-            '--givasso-color-primary'       => '#1B6B4A',
-            '--givasso-color-primary-hover'  => '#155438',
-            '--givasso-color-primary-light'  => '#E8F5EE',
+            '--givasso-color-primary'       => '#2b1533',
+            '--givasso-color-primary-hover'  => '#1f0f24',
+            '--givasso-color-primary-light'  => '#efe8f1',
             '--givasso-color-bg'             => '#FFFFFF',
             '--givasso-color-surface'        => '#F8FAF9',
             '--givasso-color-border'         => '#C6E0D6',

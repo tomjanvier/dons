@@ -48,6 +48,8 @@ final class Settings {
     const OPT_EMAIL_LOGO_URL      = 'givasso_email_logo_url';
     const OPT_EMAIL_PRIMARY_COLOR = 'givasso_email_primary_color';  // hex, ex: #4f46e5
     const OPT_EMAIL_SENDER_NAME   = 'givasso_email_sender_name';    // défaut : nom association
+    const OPT_EMAIL_THANK_SUBJECT = 'givasso_email_thank_subject';
+    const OPT_EMAIL_THANK_BODY    = 'givasso_email_thank_body';
 
     // Apparence — personnalisation visuelle du formulaire frontend
     const OPT_APPEARANCE_PRIMARY_COLOR = 'givasso_appearance_primary_color'; // hex, ex: #1B6B4A
@@ -145,6 +147,16 @@ final class Settings {
     public static function get_email_sender_name(): string {
         $name = (string) get_option( self::OPT_EMAIL_SENDER_NAME, '' );
         return $name ?: ( self::get_assoc_name() ?: get_bloginfo( 'name' ) );
+    }
+
+    public static function get_email_thank_subject(): string {
+        $subject = (string) get_option( self::OPT_EMAIL_THANK_SUBJECT, '' );
+        return $subject !== '' ? $subject : __( 'Merci pour votre don — {site_name}', 'givasso' );
+    }
+
+    public static function get_email_thank_body(): string {
+        $body = (string) get_option( self::OPT_EMAIL_THANK_BODY, '' );
+        return $body !== '' ? $body : __( "Bonjour {first_name},\n\nMerci pour votre don de {amount}. Votre soutien est précieux.", 'givasso' );
     }
 
     // ── Getters apparence ──────────────────────────────────────────────────
@@ -298,6 +310,8 @@ final class Settings {
         // Email
         update_option( self::OPT_EMAIL_LOGO_URL,      esc_url_raw( $post['email_logo_url']           ?? '' ), false );
         update_option( self::OPT_EMAIL_SENDER_NAME,   sanitize_text_field( $post['email_sender_name'] ?? '' ), false );
+        update_option( self::OPT_EMAIL_THANK_SUBJECT, sanitize_text_field( $post['email_thank_subject'] ?? '' ), false );
+        update_option( self::OPT_EMAIL_THANK_BODY,    sanitize_textarea_field( $post['email_thank_body'] ?? '' ), false );
         // Couleur : valider le format hex avant de sauvegarder
         $color = sanitize_text_field( $post['email_primary_color'] ?? '' );
         if ( preg_match( '/^#[0-9a-fA-F]{3,6}$/', $color ) ) {
