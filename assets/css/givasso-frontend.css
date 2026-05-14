@@ -444,13 +444,13 @@
 }
 
 .givasso-btn--card {
-    background: #635BFF;
-    border-color: #635BFF;
+    background: var(--givasso-color-primary);
+    border-color: var(--givasso-color-primary);
 }
 
 .givasso-btn--card:hover:not(:disabled) {
-    background: #5148e6;
-    border-color: #5148e6;
+    background: var(--givasso-color-primary-hover);
+    border-color: var(--givasso-color-primary-hover);
 }
 
 .givasso-payment-logos--in-button {
