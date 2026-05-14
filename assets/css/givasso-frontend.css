@@ -150,20 +150,20 @@
 }
 
 .givasso-amount-btn__label:hover {
-    border-color: var(--givasso-color-primary);
+    border-color: var(--givasso-color-accent);
     background:   var(--givasso-color-primary-light);
-    color:        var(--givasso-color-primary);
+    color:        var(--givasso-color-accent);
 }
 
 .givasso-amount-btn__input:checked + .givasso-amount-btn__label {
-    border-color: var(--givasso-color-primary);
-    background:   var(--givasso-color-primary);
+    border-color: var(--givasso-color-accent);
+    background:   var(--givasso-color-accent);
     color:        #fff;
 }
 
 /* Focus visible au clavier */
 .givasso-amount-btn__input:focus-visible + .givasso-amount-btn__label {
-    outline:        3px solid var(--givasso-color-primary);
+    outline:        3px solid var(--givasso-color-accent);
     outline-offset: 2px;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .givasso-input-group:focus-within {
-    border-color: var(--givasso-color-primary);
+    border-color: var(--givasso-color-accent);
 }
 
 .givasso-input-group__prefix {
@@ -269,8 +269,8 @@
 }
 
 .givasso-input:focus {
-    border-color: var(--givasso-color-primary);
-    outline:      3px solid var(--givasso-color-primary);
+    border-color: var(--givasso-color-accent);
+    outline:      3px solid var(--givasso-color-accent);
     outline-offset: 1px;
 }
 
@@ -383,9 +383,9 @@
     width:           100%;
     padding:         1rem 1.5rem;
     min-height:      44px;
-    background:      var(--givasso-color-primary);
+    background:      var(--givasso-color-accent);
     color:           #fff;
-    border:          2px solid var(--givasso-color-primary);
+    border:          2px solid var(--givasso-color-accent);
     border-radius:   var(--givasso-radius-sm);
     font-size:       1rem;
     font-weight:     600;
@@ -399,8 +399,8 @@
 }
 
 .givasso-btn--primary:hover:not(:disabled) {
-    background:   var(--givasso-color-primary-hover);
-    border-color: var(--givasso-color-primary-hover);
+    background:   var(--givasso-color-accent);
+    border-color: var(--givasso-color-accent);
     transform:    translateY(-1px);
     box-shadow:   0 4px 12px rgba(0, 0, 0, .15);
 }
