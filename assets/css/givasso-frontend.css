@@ -752,17 +752,17 @@
 
 .givasso-ha-monthly { margin-bottom: 1rem; }
 .givasso-gateway-actions { display:flex; flex-direction:column; gap:.75rem; }
-.HaPayButton { display:flex; align-items:center; border:1px solid #d1d5db; border-radius:12px; text-decoration:none; background:#fff; padding:0; cursor:pointer; width:100%; min-height:56px; overflow:hidden; color:#111827; }
+.HaPayButton { display:flex; align-items:center; border:1px solid var(--givasso-color-accent); border-radius:12px; text-decoration:none; background:var(--givasso-color-accent); padding:0; cursor:pointer; width:100%; min-height:56px; overflow:hidden; color:#fff; }
 .HaPayButton:hover,
 .HaPayButton:focus,
 .HaPayButton:visited {
-    color:#111827;
+    color:#fff;
     text-decoration:none;
-    background:#fff;
+    background:var(--givasso-color-accent);
 }
-.HaPayButtonLogoWrap { width:56px; min-width:56px; display:flex; align-items:center; justify-content:center; background:#fff; border-right:1px solid #e5e7eb; }
+.HaPayButtonLogoWrap { width:56px; min-width:56px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.18); border-right:1px solid rgba(255,255,255,.3); }
 .HaPayButtonLogo { width:32px; height:32px; }
-.HaPayButtonLabel { color:#111827; padding:0 16px; font-weight:700; flex:1; text-align:center; justify-content:center; display:flex; align-items:center; background:#fff; }
+.HaPayButtonLabel { color:#fff; padding:0 16px; font-weight:700; flex:1; text-align:center; justify-content:center; display:flex; align-items:center; background:transparent; }
 .givasso-ha-other-payments { font-size:14px; color:#374151; text-decoration:underline; text-align:center; display:block; margin-top:2px; }
 
 .givasso-payment-logos {

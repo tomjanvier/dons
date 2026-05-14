@@ -252,6 +252,8 @@ tr:has(.givasso-section-sep) th, tr:has(.givasso-section-sep) td { padding-botto
         $email_logo_url      = Settings::get_email_logo_url();
         $email_primary_color = Settings::get_email_primary_color();
         $email_sender_name   = (string) get_option( Settings::OPT_EMAIL_SENDER_NAME, '' );
+        $email_thank_subject = (string) get_option( Settings::OPT_EMAIL_THANK_SUBJECT, '' );
+        $email_thank_body    = (string) get_option( Settings::OPT_EMAIL_THANK_BODY, '' );
 
         // Association
         $assoc = [
@@ -731,10 +733,10 @@ tr:has(.givasso-section-sep) th, tr:has(.givasso-section-sep) td { padding-botto
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">
-                                    <label for="givasso-email-logo"><?php esc_html_e( 'URL du logo', 'givasso' ); ?></label>
-                                </th>
+                                <tr>
+                                    <th scope="row">
+                                        <label for="givasso-email-logo"><?php esc_html_e( 'URL du logo', 'givasso' ); ?></label>
+                                    </th>
                                 <td>
                                     <input type="url"
                                            id="givasso-email-logo"
@@ -753,8 +755,35 @@ tr:has(.givasso-section-sep) th, tr:has(.givasso-section-sep) td { padding-botto
                                         </div>
                                     <?php endif; ?>
                                 </td>
-                            </tr>
-                        </table>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        <label for="givasso-email-thank-subject"><?php esc_html_e( 'Sujet email de remerciement', 'givasso' ); ?></label>
+                                    </th>
+                                    <td>
+                                        <input type="text"
+                                               class="regular-text"
+                                               id="givasso-email-thank-subject"
+                                               name="email_thank_subject"
+                                               value="<?php echo esc_attr( $email_thank_subject ); ?>"
+                                               placeholder="<?php esc_attr_e( 'Merci pour votre don — {site_name}', 'givasso' ); ?>">
+                                        <p class="description"><?php esc_html_e( 'Variables disponibles : {site_name}, {amount}, {first_name}, {last_name}, {campaign}.', 'givasso' ); ?></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        <label for="givasso-email-thank-body"><?php esc_html_e( 'Texte email de remerciement', 'givasso' ); ?></label>
+                                    </th>
+                                    <td>
+                                        <textarea id="givasso-email-thank-body"
+                                                  name="email_thank_body"
+                                                  rows="6"
+                                                  class="large-text"
+                                                  placeholder="<?php esc_attr_e( 'Bonjour {first_name},', 'givasso' ); ?>"><?php echo esc_textarea( $email_thank_body ); ?></textarea>
+                                        <p class="description"><?php esc_html_e( 'Vous pouvez personnaliser le message librement. Les variables seront remplacées automatiquement.', 'givasso' ); ?></p>
+                                    </td>
+                                </tr>
+                            </table>
                     </div>
 
                     <!-- Aperçu de l'email — disponible dans Givasso Pro -->
@@ -800,21 +829,21 @@ tr:has(.givasso-section-sep) th, tr:has(.givasso-section-sep) td { padding-botto
                                         <input type="color"
                                                id="givasso-ap-primary"
                                                name="appearance_primary_color"
-                                               value="<?php echo esc_attr( $ap_primary ?: '#1B6B4A' ); ?>"
+                                               value="<?php echo esc_attr( $ap_primary ?: '#2b1533' ); ?>"
                                                data-preview-id="givasso-ap-primary-preview"
                                                data-hex-id="givasso-ap-primary-hex">
                                         <span id="givasso-ap-primary-preview"
                                               style="display:inline-block;width:72px;height:32px;border-radius:4px;
-                                                     background:<?php echo esc_attr( $ap_primary ?: '#1B6B4A' ); ?>;
+                                                     background:<?php echo esc_attr( $ap_primary ?: '#2b1533' ); ?>;
                                                      border:1px solid #ddd;vertical-align:middle;"></span>
-                                        <code id="givasso-ap-primary-hex"><?php echo esc_html( $ap_primary ?: '#1B6B4A' ); ?></code>
+                                        <code id="givasso-ap-primary-hex"><?php echo esc_html( $ap_primary ?: '#2b1533' ); ?></code>
                                         <?php if ( $ap_primary !== '' ) : ?>
                                             <button type="button" class="button button-small givasso-ap-reset"
                                                     data-field="appearance_primary_color"
                                                     data-enabled="appearance_primary_color_enabled"
                                                     data-preview-id="givasso-ap-primary-preview"
                                                     data-hex-id="givasso-ap-primary-hex"
-                                                    data-default="#1B6B4A">
+                                                    data-default="#2b1533">
                                                 <?php esc_html_e( 'Réinitialiser', 'givasso' ); ?>
                                             </button>
                                         <?php endif; ?>

@@ -112,12 +112,15 @@ final class PaymentProcessor {
         wp_mail( get_option( 'admin_email' ), $subject_admin, $message_admin );
 
         if ( is_email( $email ) ) {
-            $subject_donor = sprintf( __( 'Merci pour votre don — %s', 'givasso' ), $site_name );
-            $message_donor = sprintf(
-                __( "Bonjour %s,\n\nMerci pour votre don de %s. Votre soutien est précieux.", 'givasso' ),
-                $first_name ?: __( 'et merci', 'givasso' ),
-                $amount_human
-            );
+            $variables = [
+                '{site_name}'  => $site_name,
+                '{amount}'     => $amount_human,
+                '{first_name}' => $first_name ?: __( 'donateur', 'givasso' ),
+                '{last_name}'  => $last_name,
+                '{campaign}'   => $campaign_label,
+            ];
+            $subject_donor = strtr( \Givasso\Admin\Settings::get_email_thank_subject(), $variables );
+            $message_donor = strtr( \Givasso\Admin\Settings::get_email_thank_body(), $variables );
             wp_mail( $email, $subject_donor, $message_donor );
         }
     }
