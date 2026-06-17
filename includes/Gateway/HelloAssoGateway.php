@@ -74,10 +74,10 @@ final class HelloAssoGateway {
                 'firstName' => $donor_first_name,
                 'lastName'  => $donor_last_name,
             ],
-            'metadata'         => [
-                'campaign'        => $campaign,
-                'currency'        => 'EUR',
-            ],
+            'metadata'         => array_filter( [
+                'campaign' => $campaign,
+                'currency' => 'EUR',
+            ] ),
         ];
 
         $base = $this->sandbox ? self::API_SANDBOX : self::API_LIVE;
@@ -96,7 +96,8 @@ final class HelloAssoGateway {
         $data = json_decode( wp_remote_retrieve_body( $response ), true );
 
         if ( ! in_array( $code, [ 200, 201 ], true ) || empty( $data['redirectUrl'] ) ) {
-            $message = $data['message'] ?? $data['error'] ?? $data['title'] ?? ( 'HTTP ' . $code );
+            $message = $this->extract_error_message( $data, $code );
+            error_log( '[Givoly] HelloAsso checkout intent failed: ' . $message ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
             throw new \RuntimeException( 'HelloAsso checkout intent failed: ' . $message ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
         }
 
@@ -182,7 +183,8 @@ final class HelloAssoGateway {
         $data = json_decode( wp_remote_retrieve_body( $response ), true );
 
         if ( empty( $data['access_token'] ) ) {
-            $api_error = $data['error_description'] ?? $data['error'] ?? ( 'HTTP ' . $code );
+            $api_error = $this->extract_error_message( $data, $code );
+            error_log( '[Givoly] HelloAsso auth failed: ' . $api_error ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
             throw new \RuntimeException( 'HelloAsso auth failed: ' . $api_error ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
         }
 
@@ -224,6 +226,30 @@ final class HelloAssoGateway {
         update_option( self::OPT_ACCESS_TOKEN,  $r['access_token'],           false );
         update_option( self::OPT_REFRESH_TOKEN, $r['refresh_token'] ?? '',    false );
         update_option( self::OPT_EXPIRES_AT,    time() + (int) ( $r['expires_in'] ?? 1800 ), false );
+    }
+
+    private function extract_error_message( mixed $data, int $code ): string {
+        if ( ! is_array( $data ) ) {
+            return 'HTTP ' . $code;
+        }
+
+        $message = $data['message'] ?? $data['error_description'] ?? $data['error'] ?? $data['title'] ?? '';
+        $errors  = $data['errors'] ?? $data['validationErrors'] ?? null;
+
+        if ( is_array( $errors ) ) {
+            $parts = [];
+            foreach ( $errors as $field => $error ) {
+                if ( is_array( $error ) ) {
+                    $error = implode( ', ', array_filter( array_map( 'strval', $error ) ) );
+                }
+                $parts[] = is_string( $field ) ? $field . ': ' . (string) $error : (string) $error;
+            }
+            if ( $parts ) {
+                $message .= ( $message ? ' — ' : '' ) . implode( ' | ', $parts );
+            }
+        }
+
+        return $message !== '' ? $message : 'HTTP ' . $code;
     }
 
     // ── HTTP helper ────────────────────────────────────────────────────────

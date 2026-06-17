@@ -10,6 +10,7 @@
  *   @var bool   $is_ended     Campagne terminée ou archivée
  *   @var \Givoly\Form\DonationForm|null $donation_form  Formulaire de don (null si campagne terminée)
  *   @var bool   $show_description
+ *   @var bool   $show_title
  *
  * Pour personnaliser, copier ce fichier dans :
  *   {votre-theme}/givoly/campaign/campaign.php
@@ -42,9 +43,11 @@ if ( ! is_string( $display_title ) || '' === trim( $display_title ) ) {
      aria-label="<?php echo esc_attr( $campaign->get_title() ); ?>">
 
     <?php /* ── En-tête ──────────────────────────────────────────────────── */ ?>
-    <h2 class="givoly-campaign__title">
-        <?php echo esc_html( $display_title ); ?>
-    </h2>
+    <?php if ( $show_title ) : ?>
+        <h2 class="givoly-campaign__title">
+            <?php echo esc_html( $display_title ); ?>
+        </h2>
+    <?php endif; ?>
 
     <?php /* ── Formulaire ou message de fin ─────────────────────────────── */ ?>
     <?php if ( $is_ended ) : ?>

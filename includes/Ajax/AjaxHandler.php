@@ -127,6 +127,7 @@ final class AjaxHandler {
             wp_send_json_success( [ 'checkout_url' => $checkout_url ] );
 
         } catch ( \RuntimeException $e ) {
+            error_log( '[Givoly] Checkout error: ' . $e->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
             wp_send_json_error( [ 'message' => __( 'Erreur lors de la création du paiement. Veuillez réessayer.', 'givoly' ) ], 500 );
         }
     }
