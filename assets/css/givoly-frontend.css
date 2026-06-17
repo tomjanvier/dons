@@ -768,8 +768,8 @@
     justify-content: center;
     align-items: center;
     margin: .75rem 0 0;
-    min-height: 28px;
-    opacity: .82;
+    min-height: 44px;
+    opacity: .92;
     user-select: none;
 }
 
@@ -784,8 +784,8 @@
 .givoly-branding__logo {
     display: block !important;
     width: auto;
-    max-width: 74px;
-    max-height: 28px;
+    max-width: 128px;
+    max-height: 44px;
     height: auto;
     pointer-events: none;
 }
