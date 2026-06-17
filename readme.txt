@@ -52,6 +52,8 @@ Available attributes:
 **Full campaign (gauge + form)**
 `[givoly_campaign campaign="my-campaign"]`
 
+Campaign shortcode attributes include `show_title="no"` to hide both the campaign heading and the embedded form title, plus `show_form`, `show_description`, `layout`, and `theme`.
+
 = Logo and visual branding =
 
 Givoly does not ship a bitmap brand logo. The admin header currently uses a heart Dashicon and a small emoji in the settings header.

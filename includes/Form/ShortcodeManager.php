@@ -63,6 +63,7 @@ final class ShortcodeManager {
             'campaign'         => '',
             'show_description' => 'yes',
             'show_form'        => 'yes',
+            'show_title'       => 'yes',
             'layout'           => 'card',
             'theme'            => 'classic',
         ], $atts, 'givoly_campaign' );

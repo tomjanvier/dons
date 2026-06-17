@@ -24,6 +24,7 @@ final class CampaignWidget {
     private string  $campaign_slug;
     private bool    $show_description;
     private bool    $show_form;
+    private bool    $show_title;
     private string  $layout;
     private string  $theme;
 
@@ -31,6 +32,7 @@ final class CampaignWidget {
         $this->campaign_slug    = sanitize_text_field( $atts['campaign'] ?? '' );
         $this->show_description = ( $atts['show_description'] ?? 'yes' ) !== 'no';
         $this->show_form        = ( $atts['show_form'] ?? 'yes' ) !== 'no';
+        $this->show_title       = ( $atts['show_title'] ?? 'yes' ) !== 'no';
         $this->layout           = in_array( $atts['layout'] ?? 'card', FormConfig::LAYOUTS, true )
             ? $atts['layout']
             : 'card';
@@ -71,14 +73,14 @@ final class CampaignWidget {
                 'campaign'   => $this->campaign_slug,
                 'layout'     => 'flat',
                 'theme'      => $this->theme,
-                'show_title' => 'yes',
+                'show_title' => $this->show_title ? 'yes' : 'no',
                 'title'      => $campaign->get_title(),
             ] );
             $donation_form = new DonationForm( $form_config );
         }
 
         ob_start();
-        $this->load_template( $campaign, $collected, $donor_count, $percentage, $is_ended, $donation_form, $wrapper_config, $this->show_description );
+        $this->load_template( $campaign, $collected, $donor_count, $percentage, $is_ended, $donation_form, $wrapper_config, $this->show_description, $this->show_title );
         return ob_get_clean();
     }
 
@@ -90,7 +92,8 @@ final class CampaignWidget {
         bool          $is_ended,
         ?DonationForm $donation_form,
         FormConfig    $config,
-        bool          $show_description = true
+        bool          $show_description = true,
+        bool          $show_title = true
     ): void {
         // Cherche d'abord dans le thème actif (overridable).
         $theme_path  = get_stylesheet_directory() . '/givoly/campaign/campaign.php';
