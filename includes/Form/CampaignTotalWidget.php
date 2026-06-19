@@ -38,8 +38,9 @@ final class CampaignTotalWidget {
     public function render(): string {
         [ $total, $count, $campaign_obj ] = $this->fetch_data();
 
-        // display="bar" : jauge autonome (nécessite une campagne avec objectif)
         if ( $this->display === 'bar' && $campaign_obj && $campaign_obj->has_goal() ) {
+            wp_enqueue_style( 'givoly-frontend' );
+
             $pct = $campaign_obj->get_progress_percentage( $total );
             return sprintf(
                 '<div class="givoly-total givoly-total--bar" style="background:var(--givoly-campaign-bar-bg,#e9ecef);border-radius:8px;height:12px;overflow:hidden;">'
@@ -81,12 +82,12 @@ final class CampaignTotalWidget {
             $campaign_obj = $repo->find_by_slug( $this->campaign );
 
             if ( $campaign_obj ) {
-                // Campagne v0.7+ — une requête agrégée via repository
+                // Aggregated campaign stats are provided by the repository.
                 $stats = $repo->get_stats( $campaign_obj->get_id() );
                 return [ $stats['amount'], $stats['donors'], $campaign_obj ];
             }
 
-            // Rétrocompat — campagne pré-v0.7 (donor_message), une seule requête
+            // Backward compatibility for legacy campaign values stored in donor_message.
             $campaign_obj = null;
             // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name from $wpdb->prefix (trusted)
             $row = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -101,7 +102,7 @@ final class CampaignTotalWidget {
             return [ (float) ( $row['total'] ?? 0 ), (int) ( $row['cnt'] ?? 0 ), null ];
         }
 
-        // Toutes campagnes confondues — une seule requête
+        // Aggregate all completed donations.
         // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- table name from $wpdb->prefix (trusted)
         $row = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
             "SELECT COALESCE( SUM(amount), 0 ) AS total, COUNT(*) AS cnt FROM {$table} WHERE status = 'completed'", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter

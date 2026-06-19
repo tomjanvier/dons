@@ -1,30 +1,26 @@
 <?php
-
 /**
- * Enregistrement et chargement des assets CSS/JS.
+ * Registers and loads plugin assets.
  *
- * Principe : register partout, enqueue uniquement où c'est nécessaire.
+ * Assets are registered globally and enqueued only where they are needed.
  *
  * @package Givoly\Core
  */
 
 namespace Givoly\Core;
 
-if (! defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-final class AssetsLoader
-{
+final class AssetsLoader {
 
-    public function register(): void
-    {
-        add_action('wp_enqueue_scripts',    [$this, 'register_frontend_assets']);
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
+    public function register(): void {
+        add_action( 'wp_enqueue_scripts', [ $this, 'register_frontend_assets' ] );
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
     }
 
-    public function register_frontend_assets(): void
-    {
+    public function register_frontend_assets(): void {
         wp_register_style(
             'givoly-frontend',
             GIVOLY_PLUGIN_URL . 'assets/css/givoly-frontend.css',
@@ -35,29 +31,34 @@ final class AssetsLoader
         wp_register_script(
             'givoly-frontend',
             GIVOLY_PLUGIN_URL . 'assets/js/givoly-frontend.js',
-            [], // Vanilla JS — aucune dépendance
+            [],
             GIVOLY_VERSION,
             true
         );
 
-        wp_localize_script('givoly-frontend', 'givolyData', [
-            'ajax_url'    => admin_url('admin-ajax.php'),
-            'nonce'       => wp_create_nonce('givoly_frontend_nonce'),
-            'success'     => ! empty( $_GET['givoly_success'] ), // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- redirect parameter only, no sensitive data
-            'branding'    => \Givoly\Form\DonationForm::get_branding_html(),
-            'i18n'        => [
-                'error'           => __('Une erreur est survenue. Veuillez réessayer.', 'givoly'),
-                'invalid_amount'  => __('Veuillez sélectionner ou saisir un montant valide (min. 1 €).', 'givoly'),
-                'invalid_email'   => __('Veuillez saisir une adresse email valide.', 'givoly'),
-                'invalid_name'    => __('Veuillez saisir votre prénom et votre nom.', 'givoly'),
-                'success_message' => __('Merci pour votre don ! Votre générosité fait la différence.', 'givoly'),
-            ],
-        ]);
+        $is_success_return = filter_input( INPUT_GET, 'givoly_success', FILTER_VALIDATE_BOOLEAN );
+
+        wp_localize_script(
+            'givoly-frontend',
+            'givolyData',
+            [
+                'ajax_url' => admin_url( 'admin-ajax.php' ),
+                'nonce'    => wp_create_nonce( 'givoly_frontend_nonce' ),
+                'success'  => (bool) $is_success_return,
+                'branding' => \Givoly\Form\DonationForm::get_branding_html(),
+                'i18n'     => [
+                    'error'           => __( 'Une erreur est survenue. Veuillez réessayer.', 'givoly' ),
+                    'invalid_amount'  => __( 'Veuillez sélectionner ou saisir un montant valide (min. 1 €).', 'givoly' ),
+                    'invalid_email'   => __( 'Veuillez saisir une adresse email valide.', 'givoly' ),
+                    'invalid_name'    => __( 'Veuillez saisir votre prénom et votre nom.', 'givoly' ),
+                    'success_message' => __( 'Merci pour votre don ! Votre générosité fait la différence.', 'givoly' ),
+                ],
+            ]
+        );
     }
 
-    public function enqueue_admin_assets(string $hook): void
-    {
-        if (! str_contains($hook, 'givoly')) {
+    public function enqueue_admin_assets( string $hook ): void {
+        if ( ! str_contains( $hook, 'givoly' ) ) {
             return;
         }
 
@@ -71,7 +72,7 @@ final class AssetsLoader
         wp_enqueue_script(
             'givoly-admin',
             GIVOLY_PLUGIN_URL . 'assets/js/givoly-admin.js',
-            ['jquery'],
+            [ 'jquery' ],
             GIVOLY_VERSION,
             true
         );
